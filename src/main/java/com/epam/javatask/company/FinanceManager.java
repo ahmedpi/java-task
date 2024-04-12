@@ -53,25 +53,4 @@ public class FinanceManager implements FinanceService {
 	private Double getAverageSalary(List<Employee> subordinates) {
 		return subordinates.stream().mapToDouble(Employee::getSalary).average().getAsDouble();
 	}
-
-//	@Override
-//	public void printSalaryInfo() {
-//		System.out.println("UNDERPAID MANAGERS: ");
-//		for (Map.Entry<Employee, Double> entry : underPaidManagers.entrySet()) {
-//			Employee employee = entry.getKey();
-//			Double amount = entry.getValue();
-//			System.out.println(String.format(MESSAGE_UNDERPAID_MANAGER, employee.getFirstName(), employee.getLastName(),
-//					employee.getSalary(), amount));
-//		}
-//
-//		System.out.println("\nOVERPAID MANAGERS: ");
-//		for (Map.Entry<Employee, Double> entry : overPaidManagers.entrySet()) {
-//			Employee employee = entry.getKey();
-//			Double amount = entry.getValue();
-//			System.out.println(String.format(MESSAGE_OVERPAID_MANAGER, employee.getFirstName(), employee.getLastName(),
-//					employee.getSalary(), amount));
-//		}
-//		System.out.println(UNDERLINE);
-//	}
-
 }

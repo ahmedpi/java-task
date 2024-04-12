@@ -27,15 +27,6 @@ public class ReportLineManager implements ReportLineService {
 		return reportLineInfo;
 	}
 
-//	@Override
-//	public void printReportLineInfo() {
-//		if (!reportLineInfo.isEmpty()) {
-//			System.out.println("NUMBER OF EMPLOYEES WITH TOO LONG REPORTING LINES: ");
-//			reportLineInfo.stream().forEach(System.out::println);
-//			System.out.println(UNDERLINE);
-//		}
-//	}
-
 	private boolean isReportingLineTooLong(int levels) {
 		return levels > MAXIMUM_REPORTING_LINE;
 	}

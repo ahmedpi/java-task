@@ -10,12 +10,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.epam.javatask.company.Employee;
+import com.epam.javatask.company.exception.NoEmployeeRecordFoundException;
 import com.epam.javatask.company.service.CsvReaderService;
 
 public class CsvReader implements CsvReaderService {
 	private final String csvFile;
 
-	private static final String SEPARATOR = ",";
+	private static final String FIELD_SEPARATOR = ",";
 	private static final String UNDERLINE = "======================================================================";
 
 	FileResourcesUtils filResourcesUtils = new FileResourcesUtils();
@@ -25,20 +26,13 @@ public class CsvReader implements CsvReaderService {
 	}
 
 	@Override
-	public List<Employee> loadEmployeeData() {
-		File file = getFile(csvFile);
-		try {
-			file = filResourcesUtils.getFileFromResource(csvFile);
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-		}
+	public List<Employee> loadEmployeeData() throws URISyntaxException {
+
+		File file = filResourcesUtils.getFileFromResource(csvFile);
 
 		try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
 			List<Employee> employees = bufferedReader.lines().skip(1).map(line -> parseEmployee(line))
 					.collect(Collectors.toList());
-			System.out.println("Employees:");
-			employees.stream().forEach(System.out::println);
-			System.out.println(UNDERLINE);
 			return employees;
 		} catch (IOException e) {
 			throw new UncheckedIOException(e);
@@ -46,18 +40,9 @@ public class CsvReader implements CsvReaderService {
 
 	}
 
-	private File getFile(String csvFile) {
-		try {
-			return filResourcesUtils.getFileFromResource(csvFile);
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+	private Employee parseEmployee(String data) throws NoEmployeeRecordFoundException {
 
-	private Employee parseEmployee(String data) {
-
-		String[] empData = data.split(SEPARATOR, -1);
+		String[] empData = data.split(FIELD_SEPARATOR, -1);
 
 		Employee employee = new Employee();
 		employee.setId(Integer.parseInt(empData[0]));
@@ -69,6 +54,10 @@ public class CsvReader implements CsvReaderService {
 		}
 
 		return employee;
+	}
+
+	private boolean hasNoRecord(String[] line) {
+		return (line == null || line.length == 0);
 	}
 
 }

@@ -1,5 +1,7 @@
 package com.epam.javatask.company;
 
+import java.net.URISyntaxException;
+
 import com.epam.javatask.company.service.EmployeeService;
 import com.epam.javatask.company.service.StatisticsService;
 
@@ -8,20 +10,17 @@ public class BigCompany {
 	private final EmployeeService employeeService;
 
 	public BigCompany(StatisticsService statisticsService, EmployeeService employeeService) {
-		super();
 		this.statisticsService = statisticsService;
 		this.employeeService = employeeService;
 	}
 
-	public Report analyzeOrganisationStructure() {
-		Report report = employeeService.analyzeOrganisationStructure();
-		printEmployeeStatistics(report);
-		return report;
+	public EmployeeDataStore analyzeOrganisationStructure() throws URISyntaxException {
+		EmployeeDataStore employeeDataStore = employeeService.analyzeOrganisationStructure();
+		printEmployeeStatistics(employeeDataStore);
+		return employeeDataStore;
 	}
 
-	public void printEmployeeStatistics(Report report) {
-//		this.statisticsService.printSalaryInfo();
-//		this.statisticsService.printReportLineInfo();
-		this.statisticsService.printEmployeeStatistics(report);
+	public void printEmployeeStatistics(EmployeeDataStore employeeDataStore) {
+		this.statisticsService.printEmployeeStatistics(employeeDataStore);
 	}
 }

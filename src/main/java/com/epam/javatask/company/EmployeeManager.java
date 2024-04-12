@@ -1,47 +1,46 @@
 package com.epam.javatask.company;
 
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import com.epam.javatask.company.exception.NoEmployeeRecordFoundException;
 import com.epam.javatask.company.service.CsvReaderService;
 import com.epam.javatask.company.service.EmployeeService;
 import com.epam.javatask.company.service.FinanceService;
 import com.epam.javatask.company.service.ReportLineService;
-import com.epam.javatask.company.service.StatisticsService;
 
 public class EmployeeManager implements EmployeeService {
 
 	private final CsvReaderService csvReaderService;
 	private final FinanceService financeService;
 	private final ReportLineService reportLineService;
-	private final StatisticsService statisticsService;
 
 	private List<Employee> employees;
 	private Map<Employee, List<Employee>> mangerToEmployeesMap;
 
 	public EmployeeManager(CsvReaderService csvReaderService, FinanceService financeService,
-			ReportLineService reportLineService, StatisticsService statisticsService) {
+			ReportLineService reportLineService) {
 		this.csvReaderService = csvReaderService;
 		this.financeService = financeService;
 		this.reportLineService = reportLineService;
-		this.statisticsService = statisticsService;
-
-		initData();
 	}
 
 	@Override
-	public Report analyzeOrganisationStructure() {
+	public EmployeeDataStore analyzeOrganisationStructure() throws URISyntaxException {
+		initData();
 		Map<Employee, Double> underpaidManagers = getUnderPaidManagers();
 		Map<Employee, Double> overpaidManagers = getOverPaidManagers();
 		List<String> longReportLine = getReportLineReport();
-		Report report = new Report(longReportLine, underpaidManagers, overpaidManagers);
-		return report;
+		EmployeeDataStore employeeDataStore = new EmployeeDataStore(employees, longReportLine, underpaidManagers,
+				overpaidManagers);
+		return employeeDataStore;
 	}
 
-	private void initData() {
+	private void initData() throws URISyntaxException, NoEmployeeRecordFoundException {
 		employees = this.csvReaderService.loadEmployeeData();
 		mangerToEmployeesMap = getManagerToEmployeesMap(employees);
 	}
@@ -60,18 +59,17 @@ public class EmployeeManager implements EmployeeService {
 		return this.reportLineService.getReportLineReport(employees);
 	}
 
-//statistics
-
 	private Map<Employee, List<Employee>> getManagerToEmployeesMap(List<Employee> employees) {
 		Map<Employee, List<Employee>> managerEmployeeMap = new HashMap<Employee, List<Employee>>();
 
 		for (Employee emp : employees) {
-			Employee manager = getManager(emp, employees);
+			Optional<Employee> optionalManager = getManager(emp, employees);
 
-			if (manager == null) {
+			if (!optionalManager.isPresent()) {
 				continue;
 			}
 
+			Employee manager = optionalManager.get();
 			if (managerEmployeeMap.containsKey(manager)) {
 				managerEmployeeMap.get(manager).add(emp);
 			} else {
@@ -83,13 +81,11 @@ public class EmployeeManager implements EmployeeService {
 		return managerEmployeeMap;
 	}
 
-	private Employee getManager(Employee employee, List<Employee> employees) {
+	private Optional<Employee> getManager(Employee employee, List<Employee> employees) {
 		Optional<Employee> optionalManager = employees.stream().filter(emp -> emp.getId() == employee.getManagerId())
 				.findAny();
-		if (optionalManager.isPresent()) {
-			return optionalManager.get();
-		}
-		return null;
+
+		return optionalManager;
 	}
 
 }
