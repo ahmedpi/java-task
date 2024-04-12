@@ -12,8 +12,8 @@ public class FinanceManager implements FinanceService {
 	private static final int MINIMUM_MANAGER_SALARY_GAP_IN_PERCENT = 20;
 	private static final int MAXIMUM_MANAGER_SALARY_GAP_IN_PERCENT = 50;
 
-	Map<Employee, Double> underPaidManagers;
-	Map<Employee, Double> overPaidManagers;
+	private Map<Employee, Double> underPaidManagers;
+	private Map<Employee, Double> overPaidManagers;
 
 	@Override
 	public Map<Employee, Double> getUnderPaidManagers(Map<Employee, List<Employee>> employeeManagerMap) {
