@@ -1,4 +1,4 @@
-package com.epam.javatask.company;
+package com.epam.javatask.company.employee;
 
 import java.util.List;
 import java.util.Map;

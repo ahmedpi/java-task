@@ -1,4 +1,4 @@
-package com.epam.javatask.company;
+package com.epam.javatask.company.employee;
 
 import java.util.HashMap;
 import java.util.List;
@@ -10,7 +10,6 @@ import com.epam.javatask.company.service.ReportLineService;
 public class ReportLineManager implements ReportLineService {
 	private static final int MAXIMUM_REPORTING_LINE = 4;
 	private static final String MESSAGE_LONG_REPORTING_LINE = "Name: %s %s, Reporting line: %s, Exceeds reporting limit by: %s level(s)";
-	private static final String UNDERLINE = "======================================================================";
 
 	private List<String> reportLineInfo;
 

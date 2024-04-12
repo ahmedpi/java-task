@@ -1,9 +1,10 @@
-package com.epam.javatask.company;
+package com.epam.javatask.company.finance;
 
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.epam.javatask.company.employee.Employee;
 import com.epam.javatask.company.service.FinanceService;
 
 public class FinanceManager implements FinanceService {

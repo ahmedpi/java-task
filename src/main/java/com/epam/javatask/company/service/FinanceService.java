@@ -3,7 +3,7 @@ package com.epam.javatask.company.service;
 import java.util.List;
 import java.util.Map;
 
-import com.epam.javatask.company.Employee;
+import com.epam.javatask.company.employee.Employee;
 
 public interface FinanceService {
 	// public void checkManagersSalary(Map<Employee, List<Employee>>

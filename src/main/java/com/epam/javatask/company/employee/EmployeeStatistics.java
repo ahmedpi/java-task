@@ -1,9 +1,9 @@
-package com.epam.javatask.company;
+package com.epam.javatask.company.employee;
 
 import java.util.Map;
 
 import com.epam.javatask.company.service.StatisticsService;
-
+	
 public class EmployeeStatistics implements StatisticsService {
 
 	private static final String MESSAGE_UNDERPAID_MANAGER = "Name: %s %s, Salary: %s, Underpaid Amount: %s";
@@ -12,7 +12,7 @@ public class EmployeeStatistics implements StatisticsService {
 	private static final String MESSAGE_TITLE_EMPLOYEES = "EMPLOYEES:";
 	private static final String MESSAGE_TITLE_OVERPAID_MANAGERS = "\nOVERPAID MANAGERS:";
 	private static final String MESSAGE_TITLE_UNDERPAID_MANAGERS = "\nUNDERPAID MANAGERS:";
-	private static final String MESSAGE_TITLE_REPORT_LINE = "\nEMPLOYEES WITH TOO LONG REPORTING LINES: ";
+	private static final String MESSAGE_TITLE_REPORT_LINE = "\nEMPLOYEES WITH TOO LONG REPORTING LINE: ";
 	private static final String NO_OVERPAID_MANAGER_FOUND = "No Overpaid Manager Found.";
 	private static final String NO_UNDERPAID_MANAGER_FOUND = "No Underpaid Manager Found.";
 	private static final String MESSAGE_ANALYSIS_RESULT = "ANALYSIS RESULT\n";

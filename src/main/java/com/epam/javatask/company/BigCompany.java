@@ -2,6 +2,7 @@ package com.epam.javatask.company;
 
 import java.net.URISyntaxException;
 
+import com.epam.javatask.company.employee.EmployeeDataStore;
 import com.epam.javatask.company.service.EmployeeService;
 import com.epam.javatask.company.service.StatisticsService;
 

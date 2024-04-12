@@ -9,6 +9,12 @@ import java.util.Map;
 
 import org.junit.Test;
 
+import com.epam.javatask.company.employee.Employee;
+import com.epam.javatask.company.employee.EmployeeDataStore;
+import com.epam.javatask.company.employee.EmployeeManager;
+import com.epam.javatask.company.employee.EmployeeStatistics;
+import com.epam.javatask.company.employee.ReportLineManager;
+import com.epam.javatask.company.finance.FinanceManager;
 import com.epam.javatask.company.service.CsvReaderService;
 import com.epam.javatask.company.service.EmployeeService;
 import com.epam.javatask.company.service.FinanceService;

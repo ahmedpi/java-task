@@ -9,7 +9,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.epam.javatask.company.Employee;
+import com.epam.javatask.company.employee.Employee;
 import com.epam.javatask.company.exception.NoEmployeeRecordFoundException;
 import com.epam.javatask.company.service.CsvReaderService;
 

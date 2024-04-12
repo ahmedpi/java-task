@@ -1,4 +1,4 @@
-package com.epam.javatask.company;
+package com.epam.javatask.company.employee;
 
 public class Employee {
 	private int id;

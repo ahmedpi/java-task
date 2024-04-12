@@ -1,4 +1,4 @@
-package com.epam.javatask.company;
+package com.epam.javatask.company.employee;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -45,13 +45,11 @@ public class EmployeeManager implements EmployeeService {
 		mangerToEmployeesMap = getManagerToEmployeesMap(employees);
 	}
 
-	@Override
-	public Map<Employee, Double> getUnderPaidManagers() {
+	private Map<Employee, Double> getUnderPaidManagers() {
 		return financeService.getUnderPaidManagers(mangerToEmployeesMap);
 	}
 
-	@Override
-	public Map<Employee, Double> getOverPaidManagers() {
+	private Map<Employee, Double> getOverPaidManagers() {
 		return financeService.getOverPaidManagers(mangerToEmployeesMap);
 	}
 
