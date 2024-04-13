@@ -1,10 +1,9 @@
-package com.bigcompany.organization.finance;
+package com.bigcompany.organization.application;
 
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import com.bigcompany.organization.employee.Employee;
 import com.bigcompany.organization.service.FinanceService;
 import com.bigcompany.organization.service.Organization;
 

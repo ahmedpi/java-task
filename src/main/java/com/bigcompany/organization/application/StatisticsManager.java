@@ -1,11 +1,11 @@
-package com.bigcompany.organization.employee;
+package com.bigcompany.organization.application;
 
 import java.util.Map;
 
 import com.bigcompany.organization.service.Organization;
 import com.bigcompany.organization.service.StatisticsService;
 
-public class EmployeeStatistics implements StatisticsService {
+public class StatisticsManager implements StatisticsService {
 
 	private static final String MESSAGE_UNDERPAID_MANAGER = "Name: %s %s, Salary: %s, Underpaid Amount: %s";
 	private static final String MESSAGE_OVERPAID_MANAGER = "Name: %s %s, Salary: %s, Overpaid Amount: %s";

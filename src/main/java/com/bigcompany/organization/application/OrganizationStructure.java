@@ -1,17 +1,24 @@
-package com.bigcompany.organization.employee;
+package com.bigcompany.organization.application;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+import com.bigcompany.organization.exception.DuplicateEmployeeRecordFoundException;
 import com.bigcompany.organization.exception.NoEmployeeRecordFoundException;
 import com.bigcompany.organization.service.EmployeeRecordService;
 import com.bigcompany.organization.service.Organization;
 
 public class OrganizationStructure implements Organization {
+	private static final String ERROR_DUPLICATE_EMPLOYEE_RECORD = "Error: Duplicate Employee Record Found";
+	private static final String ERROR_NO_EMPLOYEE_RECORD_FOUND = "Error: No Employee Record Found";
+
 	private List<Employee> employeeList;
 	Map<Employee, List<Employee>> mangerToEmployeesMap;
 	private Map<Employee, Integer> employeesWithLongReportLine;
@@ -21,7 +28,7 @@ public class OrganizationStructure implements Organization {
 	private final EmployeeRecordService employeeRecordService;
 
 	public OrganizationStructure(EmployeeRecordService employeeRecordService)
-			throws NoEmployeeRecordFoundException, URISyntaxException {
+			throws NoEmployeeRecordFoundException, URISyntaxException, Exception {
 		this.employeeRecordService = employeeRecordService;
 
 		initData();
@@ -42,9 +49,30 @@ public class OrganizationStructure implements Organization {
 		this.overPaidManagers = overPaidManagers;
 	}
 
-	private void initData() throws NoEmployeeRecordFoundException, URISyntaxException {
+	private void initData() throws NoEmployeeRecordFoundException, URISyntaxException, Exception {
 		employeeList = this.employeeRecordService.getEmployeeData();
+		validateEmployeeData();
 		mangerToEmployeesMap = populateManagerToEmployeesMap(employeeList);
+	}
+
+	private void validateEmployeeData() throws Exception {
+		checkDuplicatedEmployees();
+		checkEmptyRecord();
+	}
+
+	private void checkEmptyRecord() throws NoEmployeeRecordFoundException {
+		if (employeeList.isEmpty()) {
+			throw new NoEmployeeRecordFoundException(ERROR_NO_EMPLOYEE_RECORD_FOUND);
+		}
+	}
+
+	private void checkDuplicatedEmployees() throws DuplicateEmployeeRecordFoundException {
+		Set<Employee> items = employeeList.stream()
+				.filter(employee -> Collections.frequency(employeeList, employee) > 1).collect(Collectors.toSet());
+
+		if (!items.isEmpty()) {
+			throw new DuplicateEmployeeRecordFoundException(ERROR_DUPLICATE_EMPLOYEE_RECORD);
+		}
 	}
 
 	@Override
@@ -95,7 +123,7 @@ public class OrganizationStructure implements Organization {
 	}
 
 	private Optional<Employee> getManager(Employee employee, List<Employee> employees) {
-		
+
 		Optional<Employee> optionalManager = employees.stream().filter(emp -> emp.getId() == employee.getManagerId())
 				.findAny();
 

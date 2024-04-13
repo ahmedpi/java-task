@@ -1,4 +1,4 @@
-package com.bigcompany.organization.employee;
+package com.bigcompany.organization.application;
 
 import java.util.HashMap;
 import java.util.List;

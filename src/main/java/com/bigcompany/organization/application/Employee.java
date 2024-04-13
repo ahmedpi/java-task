@@ -1,4 +1,6 @@
-package com.bigcompany.organization.employee;
+package com.bigcompany.organization.application;
+
+import java.util.Objects;
 
 public class Employee {
 	private int id;
@@ -56,6 +58,25 @@ public class Employee {
 
 	public void setManagerId(int managerId) {
 		this.managerId = managerId;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(firstName, id, lastName, managerId, salary);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Employee other = (Employee) obj;
+		return Objects.equals(firstName, other.firstName) && id == other.id && Objects.equals(lastName, other.lastName)
+				&& managerId == other.managerId
+				&& Double.doubleToLongBits(salary) == Double.doubleToLongBits(other.salary);
 	}
 
 	@Override

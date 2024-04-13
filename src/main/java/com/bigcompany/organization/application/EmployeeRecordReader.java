@@ -1,4 +1,4 @@
-package com.bigcompany.organization.employee;
+package com.bigcompany.organization.application;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -6,33 +6,27 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
-import com.bigcompany.organization.exception.NoEmployeeRecordFoundException;
 import com.bigcompany.organization.service.EmployeeRecordService;
-import com.bigcompany.organization.service.Organization;
 import com.bigcompany.organization.utility.FileResourcesUtils;
 
 public class EmployeeRecordReader implements EmployeeRecordService {
-	private final String csvFile;
+	private final String sourceFilePath;
 
 	private static final String FIELD_SEPARATOR = ",";
 
 	FileResourcesUtils filResourcesUtils = new FileResourcesUtils();
 
-	public EmployeeRecordReader(String csvFile) {
-		this.csvFile = csvFile;
+	public EmployeeRecordReader(String sourceFilePath) {
+		this.sourceFilePath = sourceFilePath;
 	}
 
 	@Override
 	public List<Employee> getEmployeeData() throws URISyntaxException {
 
-		File file = filResourcesUtils.getFileFromResource(csvFile);
+		File file = filResourcesUtils.getFileFromResource(sourceFilePath);
 
 		try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
 			List<Employee> employees = bufferedReader.lines().skip(1).map(line -> parseEmployee(line))
@@ -43,7 +37,7 @@ public class EmployeeRecordReader implements EmployeeRecordService {
 		}
 	}
 
-	private Employee parseEmployee(String data) throws NoEmployeeRecordFoundException {
+	private Employee parseEmployee(String data) {
 
 		String[] empData = data.split(FIELD_SEPARATOR, -1);
 

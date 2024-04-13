@@ -3,7 +3,7 @@ package com.bigcompany.organization.service;
 import java.util.List;
 import java.util.Map;
 
-import com.bigcompany.organization.employee.Employee;
+import com.bigcompany.organization.application.Employee;
 
 public interface Organization {
 	public List<Employee> getEmployeeList();
