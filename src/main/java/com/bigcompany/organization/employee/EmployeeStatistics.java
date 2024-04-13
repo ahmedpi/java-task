@@ -2,6 +2,7 @@ package com.bigcompany.organization.employee;
 
 import java.util.Map;
 
+import com.bigcompany.organization.service.Organization;
 import com.bigcompany.organization.service.StatisticsService;
 
 public class EmployeeStatistics implements StatisticsService {
@@ -21,40 +22,39 @@ public class EmployeeStatistics implements StatisticsService {
 	private static final String MESSAGE_LONG_REPORTING_LINE = "Name: %s %s, Exceeds reporting limit by: %s level(s)";
 
 	@Override
-	public void printEmployeeStatistics(OrganizationSummary organizationSummary) {
+	public void printEmployeeStatistics(Organization organization) {
 		System.out.println(MESSAGE_ANALYSIS_RESULT);
-		printEmployeeList(organizationSummary);
-		printReportLineInfo(organizationSummary);
-		printSalaryInfo(organizationSummary);
+		printEmployeeList(organization);
+		printReportLineInfo(organization);
+		printSalaryInfo(organization);
 		System.out.println(UNDERLINE);
 	}
 
-	private void printEmployeeList(OrganizationSummary organizationSummary) {
-		if (!organizationSummary.getEmployeeList().isEmpty()) {
+	private void printEmployeeList(Organization organization) {
+		if (!organization.getEmployeeList().isEmpty()) {
 			System.out.println(MESSAGE_TITLE_EMPLOYEES);
-			organizationSummary.getEmployeeList().stream().forEach(System.out::println);
+			organization.getEmployeeList().stream().forEach(System.out::println);
 		} else {
 			System.out.println(MESSAGE_NO_EMPLOYEE_FOUND);
 		}
 
 	}
 
-	private void printReportLineInfo(OrganizationSummary organizationSummary) {
-		if (!organizationSummary.getEmployeeList().isEmpty() && !organizationSummary.getEmployeesWithLongReportLine().isEmpty()) {
+	private void printReportLineInfo(Organization organization) {
+		if (!organization.getEmployeeList().isEmpty() && !organization.getEmployeesWithLongReportLine().isEmpty()) {
 			System.out.println(MESSAGE_TITLE_REPORT_LINE);
-			Map<Employee, Integer> reportingLine = organizationSummary.getEmployeesWithLongReportLine();
-			// reportingLine.stream().forEach(System.out::println);
+			Map<Employee, Integer> reportingLine = organization.getEmployeesWithLongReportLine();
 			reportingLine.keySet().stream().forEach(emp -> System.out.println(String.format(MESSAGE_LONG_REPORTING_LINE,
 					emp.getFirstName(), emp.getLastName(), reportingLine.get(emp))));
 		}
 	}
 
-	private void printSalaryInfo(OrganizationSummary organizationSummary) {
-		if (!organizationSummary.getEmployeeList().isEmpty()) {
-			Map<Employee, Double> underPaidManagers = organizationSummary.getUnderPaidManagers();
+	private void printSalaryInfo(Organization organization) {
+		if (!organization.getEmployeeList().isEmpty()) {
+			Map<Employee, Double> underPaidManagers = organization.getUnderPaidManagers();
 			printUnderpaidManagersInfo(underPaidManagers);
 
-			Map<Employee, Double> overPaidManagers = organizationSummary.getOverPaidManagers();
+			Map<Employee, Double> overPaidManagers = organization.getOverPaidManagers();
 			printOverpaidManagersInfo(overPaidManagers);
 		}
 	}
@@ -86,5 +86,4 @@ public class EmployeeStatistics implements StatisticsService {
 			System.out.println(NO_UNDERPAID_MANAGER_FOUND);
 		}
 	}
-
 }

@@ -2,26 +2,39 @@ package com.bigcompany.organization;
 
 import java.net.URISyntaxException;
 
-import com.bigcompany.organization.employee.OrganizationSummary;
-import com.bigcompany.organization.service.EmployeeService;
+import com.bigcompany.organization.service.FinanceService;
+import com.bigcompany.organization.service.Organization;
+import com.bigcompany.organization.service.ReportingLineService;
 import com.bigcompany.organization.service.StatisticsService;
 
 public class OrganizationManager {
+
+	private final FinanceService financeService;
+	private final ReportingLineService reportingLineService;
 	private final StatisticsService statisticsService;
-	private final EmployeeService employeeService;
 
-	public OrganizationManager(StatisticsService statisticsService, EmployeeService employeeService) {
+	private final Organization organization;
+
+	public OrganizationManager(Organization organization, FinanceService financeService,
+			ReportingLineService reportingLineService, StatisticsService statisticsService) {
+		this.organization = organization;
+		this.financeService = financeService;
+		this.reportingLineService = reportingLineService;
 		this.statisticsService = statisticsService;
-		this.employeeService = employeeService;
 	}
 
-	public OrganizationSummary analyzeOrganizationStructure() throws URISyntaxException {
-		OrganizationSummary organizationSummary = employeeService.analyzeOrganizationStructure();
-		printEmployeeStatistics(organizationSummary);
-		return organizationSummary;
+	public Organization analyzeOrganizationStructure() throws URISyntaxException {
+		
+		financeService.checkManagersSalary(organization);
+		
+		reportingLineService.checkEmployeesWithLongReportingLine(organization);
+		
+		printEmployeeStatistics(organization);
+
+		return organization;
 	}
 
-	public void printEmployeeStatistics(OrganizationSummary organizationSummary) {
-		this.statisticsService.printEmployeeStatistics(organizationSummary);
+	private void printEmployeeStatistics(Organization organization) {
+		this.statisticsService.printEmployeeStatistics(organization);
 	}
 }

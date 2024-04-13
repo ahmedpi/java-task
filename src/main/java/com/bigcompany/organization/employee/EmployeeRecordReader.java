@@ -1,4 +1,4 @@
-package com.bigcompany.organization.utility;
+package com.bigcompany.organization.employee;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -6,26 +6,31 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
-import com.bigcompany.organization.employee.Employee;
 import com.bigcompany.organization.exception.NoEmployeeRecordFoundException;
 import com.bigcompany.organization.service.EmployeeRecordService;
+import com.bigcompany.organization.service.Organization;
+import com.bigcompany.organization.utility.FileResourcesUtils;
 
-public class CsvReader implements EmployeeRecordService {
+public class EmployeeRecordReader implements EmployeeRecordService {
 	private final String csvFile;
 
 	private static final String FIELD_SEPARATOR = ",";
 
 	FileResourcesUtils filResourcesUtils = new FileResourcesUtils();
 
-	public CsvReader(String csvFile) {
+	public EmployeeRecordReader(String csvFile) {
 		this.csvFile = csvFile;
 	}
 
 	@Override
-	public List<Employee> loadEmployeeData() throws URISyntaxException {
+	public List<Employee> getEmployeeData() throws URISyntaxException {
 
 		File file = filResourcesUtils.getFileFromResource(csvFile);
 
@@ -53,4 +58,5 @@ public class CsvReader implements EmployeeRecordService {
 
 		return employee;
 	}
+
 }

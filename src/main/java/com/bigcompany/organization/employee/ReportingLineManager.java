@@ -5,16 +5,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.bigcompany.organization.service.Organization;
 import com.bigcompany.organization.service.ReportingLineService;
 
 public class ReportingLineManager implements ReportingLineService {
 	private static final int MAXIMUM_REPORTING_LINE = 4;
 
-	@Override
-	public Map<Employee, Integer> getEmployeesWithLongReportingLine(List<Employee> employees) {
-		Map<Employee, Integer> reportingLinesMap = getEmployeeReportingLines(employees);
+	public void checkEmployeesWithLongReportingLine(Organization organization) {
+		Map<Employee, Integer> reportingLinesMap = getEmployeeReportingLines(organization.getEmployeeList());
 
-		return getEmployeesWithExtraLine(reportingLinesMap);
+		organization.setEmployeesWithLongReportLine(getEmployeesWithExtraLine(reportingLinesMap));
 	}
 
 	private Map<Employee, Integer> getEmployeesWithExtraLine(Map<Employee, Integer> reportingLinesMap) {

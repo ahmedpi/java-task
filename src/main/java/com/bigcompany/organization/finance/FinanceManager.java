@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import com.bigcompany.organization.employee.Employee;
 import com.bigcompany.organization.service.FinanceService;
+import com.bigcompany.organization.service.Organization;
 
 public class FinanceManager implements FinanceService {
 
@@ -16,7 +17,13 @@ public class FinanceManager implements FinanceService {
 	private Map<Employee, Double> overPaidManagers;
 
 	@Override
-	public Map<Employee, Double> getUnderPaidManagers(Map<Employee, List<Employee>> employeeManagerMap) {
+	public void checkManagersSalary(Organization organization) {
+		Map<Employee, List<Employee>> employeeManagerMap = organization.getMangerToEmployeesMap();
+		organization.setUnderPaidManagers(getUnderPaidManagers(employeeManagerMap));
+		organization.setOverPaidManagers(getOverPaidManagers(employeeManagerMap));
+	}
+	
+	private Map<Employee, Double> getUnderPaidManagers(Map<Employee, List<Employee>> employeeManagerMap) {
 		underPaidManagers = employeeManagerMap.keySet().stream()
 				.filter(manager -> manager.getSalary() < calculateMinimumSalary(employeeManagerMap.get(manager)))
 				.collect(Collectors.toMap(e -> e, man -> getUnderPaidAmount(man, employeeManagerMap.get(man))));
@@ -24,8 +31,7 @@ public class FinanceManager implements FinanceService {
 		return underPaidManagers;
 	}
 
-	@Override
-	public Map<Employee, Double> getOverPaidManagers(Map<Employee, List<Employee>> employeeManagerMap) {
+	private Map<Employee, Double> getOverPaidManagers(Map<Employee, List<Employee>> employeeManagerMap) {
 		overPaidManagers = employeeManagerMap.keySet().stream()
 				.filter(manager -> manager.getSalary() > calculateMaximumSalary(employeeManagerMap.get(manager)))
 				.collect(Collectors.toMap(e -> e, emp -> getOverPaidAmount(emp, employeeManagerMap.get(emp))));
