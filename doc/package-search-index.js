@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"com.bigcompany.organization"},{"l":"com.bigcompany.organization.employee"},{"l":"com.bigcompany.organization.exception"},{"l":"com.bigcompany.organization.finance"},{"l":"com.bigcompany.organization.service"},{"l":"com.bigcompany.organization.utility"},{"l":"com.epam.javatask.company"}];updateSearchResults();
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"com.bigcompany.organization.finance"}];updateSearchResults();

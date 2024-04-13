@@ -1,4 +1,4 @@
-package com.epam.javatask.company;
+package com.bigcompany.organization;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -9,7 +9,6 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import com.bigcompany.organization.OrganizationManager;
 import com.bigcompany.organization.employee.Employee;
 import com.bigcompany.organization.employee.EmployeeManager;
 import com.bigcompany.organization.employee.EmployeeStatistics;

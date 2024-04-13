@@ -17,7 +17,6 @@ public class CsvReader implements CsvReaderService {
 	private final String csvFile;
 
 	private static final String FIELD_SEPARATOR = ",";
-	private static final String UNDERLINE = "======================================================================";
 
 	FileResourcesUtils filResourcesUtils = new FileResourcesUtils();
 
@@ -37,7 +36,6 @@ public class CsvReader implements CsvReaderService {
 		} catch (IOException e) {
 			throw new UncheckedIOException(e);
 		}
-
 	}
 
 	private Employee parseEmployee(String data) throws NoEmployeeRecordFoundException {
@@ -55,9 +53,4 @@ public class CsvReader implements CsvReaderService {
 
 		return employee;
 	}
-
-	private boolean hasNoRecord(String[] line) {
-		return (line == null || line.length == 0);
-	}
-
 }
