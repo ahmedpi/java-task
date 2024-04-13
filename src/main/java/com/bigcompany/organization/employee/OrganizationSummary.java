@@ -5,14 +5,14 @@ import java.util.Map;
 
 public class OrganizationSummary {
 	private final List<Employee> employeeList;
-	private final List<String> reportLineInfo;
+	private final Map<Employee, Integer> employeesWithLongReportLine;
 	private final Map<Employee, Double> underPaidManagers;
 	private final Map<Employee, Double> overPaidManagers;
 
-	public OrganizationSummary(List<Employee> employeeList, List<String> reportLineInfo, Map<Employee, Double> underPaidManagers,
-			Map<Employee, Double> overPaidManagers) {
+	public OrganizationSummary(List<Employee> employeeList, Map<Employee, Integer> employeesWithLongReportLine,
+			Map<Employee, Double> underPaidManagers, Map<Employee, Double> overPaidManagers) {
 		this.employeeList = employeeList;
-		this.reportLineInfo = reportLineInfo;
+		this.employeesWithLongReportLine = employeesWithLongReportLine;
 		this.underPaidManagers = underPaidManagers;
 		this.overPaidManagers = overPaidManagers;
 	}
@@ -21,8 +21,8 @@ public class OrganizationSummary {
 		return employeeList;
 	}
 
-	public List<String> getReportingLineInfo() {
-		return reportLineInfo;
+	public Map<Employee, Integer> getEmployeesWithLongReportLine() {
+		return employeesWithLongReportLine;
 	}
 
 	public Map<Employee, Double> getUnderPaidManagers() {

@@ -11,9 +11,9 @@ import java.util.stream.Collectors;
 
 import com.bigcompany.organization.employee.Employee;
 import com.bigcompany.organization.exception.NoEmployeeRecordFoundException;
-import com.bigcompany.organization.service.CsvReaderService;
+import com.bigcompany.organization.service.EmployeeRecordService;
 
-public class CsvReader implements CsvReaderService {
+public class CsvReader implements EmployeeRecordService {
 	private final String csvFile;
 
 	private static final String FIELD_SEPARATOR = ",";

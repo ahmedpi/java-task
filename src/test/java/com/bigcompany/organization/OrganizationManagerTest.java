@@ -4,7 +4,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.net.URISyntaxException;
-import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
@@ -15,7 +14,7 @@ import com.bigcompany.organization.employee.EmployeeStatistics;
 import com.bigcompany.organization.employee.OrganizationSummary;
 import com.bigcompany.organization.employee.ReportingLineManager;
 import com.bigcompany.organization.finance.FinanceManager;
-import com.bigcompany.organization.service.CsvReaderService;
+import com.bigcompany.organization.service.EmployeeRecordService;
 import com.bigcompany.organization.service.EmployeeService;
 import com.bigcompany.organization.service.FinanceService;
 import com.bigcompany.organization.service.ReportingLineService;
@@ -49,31 +48,24 @@ public class OrganizationManagerTest {
 	}
 
 	@Test
-	public void GetEmployeeReportingLine_ReturnsEmptyList_WhenNoEmployeeExceedsLimit() throws URISyntaxException {
+	public void GetEmployeeWithLongReportingLine_ReturnsEmptyList_WhenNoEmployeeExceedsLimit() throws URISyntaxException {
 		OrganizationManager organizationManager = init("employees_normal.csv");
 		OrganizationSummary organizationSummary = organizationManager.analyzeOrganizationStructure();
-		List<String> actualResult = organizationSummary.getReportingLineInfo();
+		Map<Employee, Integer> actualResult = organizationSummary.getEmployeesWithLongReportLine();
 		assertTrue(actualResult.isEmpty());
 	}
 
 	@Test
-	public void GetEmployeeReportingLine_ReturnsMessageList_WhenSomeEmployeeExceedsLimit() throws URISyntaxException {
+	public void GetEmployeeWithLongReportingLine_ReturnsList_WhenSomeEmployeeExceedsLimit() throws URISyntaxException {
 		OrganizationManager organizationManager = init("employees.csv");
 		OrganizationSummary organizationSummary = organizationManager.analyzeOrganizationStructure();
-		List<String> actualResult = organizationSummary.getReportingLineInfo();
+		Map<Employee, Integer> actualResult = organizationSummary.getEmployeesWithLongReportLine();
 		assertFalse(actualResult.isEmpty());
-	}
-
-	@Test
-	public void ShouldPrintNothing_WhenCsvFileIsEmpty() throws URISyntaxException {
-		OrganizationManager organizationManager = init("employees_empty.csv");
-		OrganizationSummary organizationSummary = organizationManager.analyzeOrganizationStructure();
-		List<String> actualResult = organizationSummary.getReportingLineInfo();
-		assertTrue(actualResult.isEmpty());
+		assertTrue(actualResult.keySet().stream().allMatch(emp -> actualResult.get(emp) > 0));
 	}
 
 	private OrganizationManager init(String csvFile) {
-		CsvReaderService csvReaderService = new CsvReader(csvFile);
+		EmployeeRecordService csvReaderService = new CsvReader(csvFile);
 		FinanceService financeService = new FinanceManager();
 		ReportingLineService reportingLineService = new ReportingLineManager();
 		StatisticsService statisticsService = new EmployeeStatistics();

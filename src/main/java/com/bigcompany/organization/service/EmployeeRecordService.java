@@ -6,6 +6,6 @@ import java.util.List;
 import com.bigcompany.organization.employee.Employee;
 import com.bigcompany.organization.exception.NoEmployeeRecordFoundException;
 
-public interface CsvReaderService {
+public interface EmployeeRecordService {
 	public List<Employee> loadEmployeeData() throws URISyntaxException, NoEmployeeRecordFoundException;
 }

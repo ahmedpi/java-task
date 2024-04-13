@@ -64,4 +64,8 @@ public class Employee {
 				+ ", managerId=" + managerId + "]";
 	}
 
+	public boolean isCeo() {
+		return managerId == 0;
+	}
+
 }

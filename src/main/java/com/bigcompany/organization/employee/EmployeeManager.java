@@ -8,23 +8,23 @@ import java.util.Map;
 import java.util.Optional;
 
 import com.bigcompany.organization.exception.NoEmployeeRecordFoundException;
-import com.bigcompany.organization.service.CsvReaderService;
+import com.bigcompany.organization.service.EmployeeRecordService;
 import com.bigcompany.organization.service.EmployeeService;
 import com.bigcompany.organization.service.FinanceService;
 import com.bigcompany.organization.service.ReportingLineService;
 
 public class EmployeeManager implements EmployeeService {
 
-	private final CsvReaderService csvReaderService;
+	private final EmployeeRecordService employeeRecordService;
 	private final FinanceService financeService;
 	private final ReportingLineService reportingLineService;
 
 	private List<Employee> employees;
 	private Map<Employee, List<Employee>> mangerToEmployeesMap;
 
-	public EmployeeManager(CsvReaderService csvReaderService, FinanceService financeService,
+	public EmployeeManager(EmployeeRecordService employeeRecordService, FinanceService financeService,
 			ReportingLineService reportingLineService) {
-		this.csvReaderService = csvReaderService;
+		this.employeeRecordService = employeeRecordService;
 		this.financeService = financeService;
 		this.reportingLineService = reportingLineService;
 	}
@@ -34,14 +34,14 @@ public class EmployeeManager implements EmployeeService {
 		initData();
 		Map<Employee, Double> underpaidManagers = getUnderPaidManagers();
 		Map<Employee, Double> overpaidManagers = getOverPaidManagers();
-		List<String> longReportLine = getEmployeeReportingLine();
+		Map<Employee, Integer> longReportLine = getEmployeeReportingLine();
 		OrganizationSummary organizationSummary = new OrganizationSummary(employees, longReportLine, underpaidManagers,
 				overpaidManagers);
 		return organizationSummary;
 	}
 
 	private void initData() throws URISyntaxException, NoEmployeeRecordFoundException {
-		employees = this.csvReaderService.loadEmployeeData();
+		employees = this.employeeRecordService.loadEmployeeData();
 		mangerToEmployeesMap = getManagerToEmployeesMap(employees);
 	}
 
@@ -53,8 +53,8 @@ public class EmployeeManager implements EmployeeService {
 		return financeService.getOverPaidManagers(mangerToEmployeesMap);
 	}
 
-	private List<String> getEmployeeReportingLine() {
-		return this.reportingLineService.getEmployeeReportingLine(employees);
+	private Map<Employee, Integer> getEmployeeReportingLine() {
+		return this.reportingLineService.getEmployeesWithLongReportingLine(employees);
 	}
 
 	private Map<Employee, List<Employee>> getManagerToEmployeesMap(List<Employee> employees) {

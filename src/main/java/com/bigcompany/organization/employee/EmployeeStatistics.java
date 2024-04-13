@@ -3,7 +3,7 @@ package com.bigcompany.organization.employee;
 import java.util.Map;
 
 import com.bigcompany.organization.service.StatisticsService;
-	
+
 public class EmployeeStatistics implements StatisticsService {
 
 	private static final String MESSAGE_UNDERPAID_MANAGER = "Name: %s %s, Salary: %s, Underpaid Amount: %s";
@@ -17,6 +17,8 @@ public class EmployeeStatistics implements StatisticsService {
 	private static final String NO_UNDERPAID_MANAGER_FOUND = "No Underpaid Manager Found.";
 	private static final String MESSAGE_ANALYSIS_RESULT = "ANALYSIS RESULT\n";
 	private static final String MESSAGE_NO_EMPLOYEE_FOUND = "No Employee List Found\n";
+
+	private static final String MESSAGE_LONG_REPORTING_LINE = "Name: %s %s, Exceeds reporting limit by: %s level(s)";
 
 	@Override
 	public void printEmployeeStatistics(OrganizationSummary organizationSummary) {
@@ -38,9 +40,12 @@ public class EmployeeStatistics implements StatisticsService {
 	}
 
 	private void printReportLineInfo(OrganizationSummary organizationSummary) {
-		if (!organizationSummary.getEmployeeList().isEmpty() && !organizationSummary.getReportingLineInfo().isEmpty()) {
+		if (!organizationSummary.getEmployeeList().isEmpty() && !organizationSummary.getEmployeesWithLongReportLine().isEmpty()) {
 			System.out.println(MESSAGE_TITLE_REPORT_LINE);
-			organizationSummary.getReportingLineInfo().stream().forEach(System.out::println);
+			Map<Employee, Integer> reportingLine = organizationSummary.getEmployeesWithLongReportLine();
+			// reportingLine.stream().forEach(System.out::println);
+			reportingLine.keySet().stream().forEach(emp -> System.out.println(String.format(MESSAGE_LONG_REPORTING_LINE,
+					emp.getFirstName(), emp.getLastName(), reportingLine.get(emp))));
 		}
 	}
 
