@@ -1,6 +1,7 @@
+com.bigcompany.organization
+com.bigcompany.organization.employee
+com.bigcompany.organization.exception
+com.bigcompany.organization.finance
+com.bigcompany.organization.service
+com.bigcompany.organization.utility
 com.epam.javatask.company
-com.epam.javatask.company.employee
-com.epam.javatask.company.exception
-com.epam.javatask.company.finance
-com.epam.javatask.company.service
-com.epam.javatask.company.utility
