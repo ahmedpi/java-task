@@ -24,17 +24,21 @@ public class OrganizationManager {
 	}
 
 	public Organization analyzeOrganizationStructure() throws URISyntaxException {
-		
-		financeService.checkManagersSalary(organization);
-		
-		reportingLineService.checkEmployeesWithLongReportingLine(organization);
-		
-		printEmployeeStatistics(organization);
-
+		checkManagersSalary();
+		checkEmployeesReportingLine();
+		printEmployeeStatistics();
 		return organization;
 	}
 
-	private void printEmployeeStatistics(Organization organization) {
+	private void checkEmployeesReportingLine() {
+		reportingLineService.checkEmployeesWithLongReportingLine(organization);
+	}
+
+	private void checkManagersSalary() {
+		financeService.checkManagersSalary(organization);
+	}
+
+	private void printEmployeeStatistics() {
 		this.statisticsService.printEmployeeStatistics(organization);
 	}
 }
