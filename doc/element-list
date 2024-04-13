@@ -1,1 +1,6 @@
+com.bigcompany.organization
+com.bigcompany.organization.employee
+com.bigcompany.organization.exception
 com.bigcompany.organization.finance
+com.bigcompany.organization.service
+com.bigcompany.organization.utility
