@@ -16,6 +16,7 @@ public class ReportingLineManager implements ReportingLineService {
 		this.organization = organization;
 	}
 
+	@Override
 	public void checkEmployeesWithLongReportingLine() {
 		Map<Employee, Integer> employeesWithLongLine = getEmployeesWithExtraLine(organization.getEmployeeList());
 		organization.setEmployeesWithLongReportLine(employeesWithLongLine);

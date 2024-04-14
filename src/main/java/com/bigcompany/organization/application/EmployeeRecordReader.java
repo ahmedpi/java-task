@@ -29,6 +29,10 @@ public class EmployeeRecordReader implements EmployeeRecordService {
 		this.sourceFilePath = sourceFilePath;
 	}
 
+	/**
+	 * Assumptions: An employee can not be a manager to him/herself. An employee can
+	 * not report to it's subordinates (We can not have loop)
+	 */
 	@Override
 	public List<Employee> processEmployeeData() throws Exception {
 		File file = filResourcesUtils.getFileFromResource(sourceFilePath);
@@ -68,8 +72,8 @@ public class EmployeeRecordReader implements EmployeeRecordService {
 	}
 
 	private void validateEmployeeData(List<Employee> employeeList) throws Exception {
-		checkDuplicatedEmployees(employeeList);
 		checkEmptyRecord(employeeList);
+		checkDuplicatedEmployees(employeeList);
 	}
 
 	private void checkEmptyRecord(List<Employee> employeeList) throws NoEmployeeRecordFoundException {
