@@ -12,16 +12,16 @@ import org.junit.Test;
 
 import com.bigcompany.organization.application.Employee;
 import com.bigcompany.organization.application.EmployeeRecordReader;
-import com.bigcompany.organization.application.FinanceManager;
 import com.bigcompany.organization.application.OrganizationStructure;
 import com.bigcompany.organization.application.ReportingLineManager;
+import com.bigcompany.organization.application.SalaryManager;
 import com.bigcompany.organization.application.StatisticsManager;
 import com.bigcompany.organization.exception.DuplicateEmployeeRecordFoundException;
 import com.bigcompany.organization.exception.NoEmployeeRecordFoundException;
 import com.bigcompany.organization.service.EmployeeRecordService;
-import com.bigcompany.organization.service.FinanceService;
 import com.bigcompany.organization.service.Organization;
 import com.bigcompany.organization.service.ReportingLineService;
+import com.bigcompany.organization.service.SalaryService;
 import com.bigcompany.organization.service.StatisticsService;
 
 public class OrganizationManagerTest {
@@ -108,11 +108,11 @@ public class OrganizationManagerTest {
 			throws NoEmployeeRecordFoundException, URISyntaxException, Exception {
 		EmployeeRecordService employeeRecordService = new EmployeeRecordReader(csvFile);
 		Organization organization = new OrganizationStructure(employeeRecordService);
-		FinanceService financeService = new FinanceManager();
-		ReportingLineService reportingLineService = new ReportingLineManager();
+		SalaryService salaryService = new SalaryManager();
+		ReportingLineService reportingLineService = new ReportingLineManager(organization);
 		StatisticsService statisticsService = new StatisticsManager();
 
-		OrganizationManager organizationManager = new OrganizationManager(organization, financeService,
+		OrganizationManager organizationManager = new OrganizationManager(organization, salaryService,
 				reportingLineService, statisticsService);
 
 		return organizationManager;

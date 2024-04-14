@@ -5,10 +5,13 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.net.URISyntaxException;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.bigcompany.organization.exception.DuplicateEmployeeRecordFoundException;
+import com.bigcompany.organization.exception.NoEmployeeRecordFoundException;
 import com.bigcompany.organization.service.EmployeeRecordService;
 import com.bigcompany.organization.utility.FileResourcesUtils;
 
@@ -17,6 +20,9 @@ public class EmployeeRecordReader implements EmployeeRecordService {
 
 	private static final String FIELD_SEPARATOR = ",";
 
+	private static final String ERROR_DUPLICATE_EMPLOYEE_RECORD = "Error: Duplicate Employee Record Found";
+	private static final String ERROR_NO_EMPLOYEE_RECORD_FOUND = "Error: No Employee Record Found";
+
 	FileResourcesUtils filResourcesUtils = new FileResourcesUtils();
 
 	public EmployeeRecordReader(String sourceFilePath) {
@@ -24,9 +30,12 @@ public class EmployeeRecordReader implements EmployeeRecordService {
 	}
 
 	@Override
-	public List<Employee> getEmployeeData() throws URISyntaxException {
+	public List<Employee> processEmployeeData() throws Exception {
 		File file = filResourcesUtils.getFileFromResource(sourceFilePath);
-		return mapCsvToEmployee(file);
+		List<Employee> employeeList = mapCsvToEmployee(file);
+		validateEmployeeData(employeeList);
+		return employeeList;
+
 	}
 
 	private List<Employee> mapCsvToEmployee(File file) {
@@ -56,6 +65,26 @@ public class EmployeeRecordReader implements EmployeeRecordService {
 
 	private boolean hasManager(String managerId) {
 		return !managerId.isEmpty();
+	}
+
+	private void validateEmployeeData(List<Employee> employeeList) throws Exception {
+		checkDuplicatedEmployees(employeeList);
+		checkEmptyRecord(employeeList);
+	}
+
+	private void checkEmptyRecord(List<Employee> employeeList) throws NoEmployeeRecordFoundException {
+		if (employeeList.isEmpty()) {
+			throw new NoEmployeeRecordFoundException(ERROR_NO_EMPLOYEE_RECORD_FOUND);
+		}
+	}
+
+	private void checkDuplicatedEmployees(List<Employee> employeeList) throws DuplicateEmployeeRecordFoundException {
+		Set<Employee> items = employeeList.stream()
+				.filter(employee -> Collections.frequency(employeeList, employee) > 1).collect(Collectors.toSet());
+
+		if (!items.isEmpty()) {
+			throw new DuplicateEmployeeRecordFoundException(ERROR_DUPLICATE_EMPLOYEE_RECORD);
+		}
 	}
 
 }

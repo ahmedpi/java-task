@@ -18,7 +18,5 @@ public interface Organization {
 
 	public void setOverPaidManagers(Map<Employee, Double> overPaidManagers);
 
-	public Map<Employee, List<Employee>> getMangerToEmployeesMap();
-
 	public void setEmployeesWithLongReportLine(Map<Employee, Integer> employeesWithLongReportLine);
 }

@@ -1,6 +1,5 @@
 package com.bigcompany.organization.application;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -11,21 +10,20 @@ import com.bigcompany.organization.service.ReportingLineService;
 public class ReportingLineManager implements ReportingLineService {
 	private static final int MAXIMUM_REPORTING_LINE = 4;
 
-	public void checkEmployeesWithLongReportingLine(Organization organization) {
-		Map<Employee, Integer> reportingLinesMap = getEmployeeReportingLines(organization.getEmployeeList());
+	private final Organization organization;
 
-		organization.setEmployeesWithLongReportLine(getEmployeesWithExtraLine(reportingLinesMap));
+	public ReportingLineManager(Organization organization) {
+		this.organization = organization;
 	}
 
-	private Map<Employee, Integer> getEmployeesWithExtraLine(Map<Employee, Integer> reportingLinesMap) {
-		return reportingLinesMap.keySet().stream().filter(emp -> isReportingLineTooLong(reportingLinesMap.get(emp)))
-				.collect(Collectors.toMap(emp -> emp, emp -> countExtraReportLine(reportingLinesMap.get(emp))));
+	public void checkEmployeesWithLongReportingLine() {
+		Map<Employee, Integer> employeesWithLongLine = getEmployeesWithExtraLine(organization.getEmployeeList());
+		organization.setEmployeesWithLongReportLine(employeesWithLongLine);
 	}
 
-	private Map<Employee, Integer> getEmployeeReportingLines(List<Employee> employees) {
-		Map<Employee, Integer> reportingLinesMap = new HashMap<Employee, Integer>();
-		employees.stream().forEach(emp -> reportingLinesMap.put(emp, countNumberOfLevels(emp, employees)));
-		return reportingLinesMap;
+	private Map<Employee, Integer> getEmployeesWithExtraLine(List<Employee> employees) {
+		return employees.stream().filter(emp -> isReportingLineTooLong(emp.getReportingLine(employees)))
+				.collect(Collectors.toMap(emp -> emp, emp -> countExtraReportLine(emp.getReportingLine(employees))));
 	}
 
 	private int countExtraReportLine(Integer employeeReportingLevel) {
@@ -34,29 +32,5 @@ public class ReportingLineManager implements ReportingLineService {
 
 	private boolean isReportingLineTooLong(int levels) {
 		return levels > MAXIMUM_REPORTING_LINE;
-	}
-
-	private int countNumberOfLevels(Employee employee, List<Employee> employeeList) {
-		int managerId = employee.getManagerId();
-		int countReportingLevel = 0;
-		if (employee.isCeo()) {
-			return 0;
-		}
-
-		countReportingLevel++;
-		for (Employee e : employeeList) {
-			if (isManagerSubordinate(managerId, e)) {
-				countReportingLevel += countNumberOfLevels(e, employeeList);
-			}
-		}
-		return countReportingLevel;
-	}
-
-	private boolean isManagerSubordinate(int managerId, Employee employee) {
-		return employee.getId() == managerId && isNotCeo(employee);
-	}
-
-	private boolean isNotCeo(Employee employee) {
-		return !employee.isCeo();
 	}
 }

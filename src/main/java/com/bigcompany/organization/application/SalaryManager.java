@@ -1,13 +1,16 @@
 package com.bigcompany.organization.application;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
-import com.bigcompany.organization.service.FinanceService;
 import com.bigcompany.organization.service.Organization;
+import com.bigcompany.organization.service.SalaryService;
 
-public class FinanceManager implements FinanceService {
+public class SalaryManager implements SalaryService {
 
 	private static final int MINIMUM_MANAGER_SALARY_GAP_IN_PERCENT = 20;
 	private static final int MAXIMUM_MANAGER_SALARY_GAP_IN_PERCENT = 50;
@@ -17,7 +20,8 @@ public class FinanceManager implements FinanceService {
 
 	@Override
 	public void checkManagersSalary(Organization organization) {
-		Map<Employee, List<Employee>> employeeManagerMap = organization.getMangerToEmployeesMap();
+		Map<Employee, List<Employee>> employeeManagerMap = populateManagerToEmployeesMap(
+				organization.getEmployeeList());
 		organization.setUnderPaidManagers(getUnderPaidManagers(employeeManagerMap));
 		organization.setOverPaidManagers(getOverPaidManagers(employeeManagerMap));
 	}
@@ -58,5 +62,35 @@ public class FinanceManager implements FinanceService {
 
 	private Double getSubordinatesAverageSalary(List<Employee> subordinates) {
 		return subordinates.stream().mapToDouble(Employee::getSalary).average().getAsDouble();
+	}
+
+	private Map<Employee, List<Employee>> populateManagerToEmployeesMap(List<Employee> employees) {
+		Map<Employee, List<Employee>> managerEmployeeMap = new HashMap<Employee, List<Employee>>();
+
+		for (Employee emp : employees) {
+			Optional<Employee> optionalManager = getManager(emp, employees);
+
+			if (!optionalManager.isPresent()) {
+				continue;
+			}
+
+			Employee manager = optionalManager.get();
+			if (managerEmployeeMap.containsKey(manager)) {
+				managerEmployeeMap.get(manager).add(emp);
+			} else {
+				List<Employee> subordinates = new ArrayList<Employee>();
+				subordinates.add(emp);
+				managerEmployeeMap.put(manager, subordinates);
+			}
+		}
+		return managerEmployeeMap;
+	}
+
+	private Optional<Employee> getManager(Employee employee, List<Employee> employees) {
+
+		Optional<Employee> optionalManager = employees.stream().filter(emp -> emp.getId() == employee.getManagerId())
+				.findAny();
+
+		return optionalManager;
 	}
 }

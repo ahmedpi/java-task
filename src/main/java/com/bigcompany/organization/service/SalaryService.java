@@ -1,5 +1,5 @@
 package com.bigcompany.organization.service;
 
-public interface FinanceService {
+public interface SalaryService {
 	public void checkManagersSalary(Organization organization);
 }

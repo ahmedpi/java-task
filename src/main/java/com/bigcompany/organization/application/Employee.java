@@ -1,5 +1,6 @@
 package com.bigcompany.organization.application;
 
+import java.util.List;
 import java.util.Objects;
 
 public class Employee {
@@ -87,6 +88,31 @@ public class Employee {
 
 	public boolean isCeo() {
 		return managerId == 0;
+	}
+
+	public int getReportingLine(List<Employee> employeeList) {
+		int countReportingLevel = 0;
+
+		if (isCeo()) {
+			return 0;
+		}
+
+		countReportingLevel++;
+		for (Employee e : employeeList) {
+			if (isManagerSubordinate(managerId, e)) {
+				countReportingLevel += e.getReportingLine(employeeList);
+			}
+		}
+
+		return countReportingLevel;
+	}
+
+	private boolean isManagerSubordinate(int managerId, Employee employee) {
+		return employee.getId() == managerId && isNotCeo(employee);
+	}
+
+	private boolean isNotCeo(Employee employee) {
+		return !employee.isCeo();
 	}
 
 }
