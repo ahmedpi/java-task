@@ -21,10 +21,10 @@ public class FinanceManager implements FinanceService {
 		organization.setUnderPaidManagers(getUnderPaidManagers(employeeManagerMap));
 		organization.setOverPaidManagers(getOverPaidManagers(employeeManagerMap));
 	}
-	
+
 	private Map<Employee, Double> getUnderPaidManagers(Map<Employee, List<Employee>> employeeManagerMap) {
 		underPaidManagers = employeeManagerMap.keySet().stream()
-				.filter(manager -> manager.getSalary() < calculateMinimumSalary(employeeManagerMap.get(manager)))
+				.filter(manager -> manager.getSalary() < calculateManagerMinimumSalary(employeeManagerMap.get(manager)))
 				.collect(Collectors.toMap(e -> e, man -> getUnderPaidAmount(man, employeeManagerMap.get(man))));
 
 		return underPaidManagers;
@@ -32,31 +32,31 @@ public class FinanceManager implements FinanceService {
 
 	private Map<Employee, Double> getOverPaidManagers(Map<Employee, List<Employee>> employeeManagerMap) {
 		overPaidManagers = employeeManagerMap.keySet().stream()
-				.filter(manager -> manager.getSalary() > calculateMaximumSalary(employeeManagerMap.get(manager)))
+				.filter(manager -> manager.getSalary() > calculateManagerMaximumSalary(employeeManagerMap.get(manager)))
 				.collect(Collectors.toMap(e -> e, emp -> getOverPaidAmount(emp, employeeManagerMap.get(emp))));
 
 		return overPaidManagers;
 	}
 
 	private Double getUnderPaidAmount(Employee manager, List<Employee> subordinates) {
-		return calculateMinimumSalary(subordinates) - manager.getSalary();
+		return calculateManagerMinimumSalary(subordinates) - manager.getSalary();
 	}
 
 	private Double getOverPaidAmount(Employee manager, List<Employee> subordinates) {
-		return manager.getSalary() - calculateMaximumSalary(subordinates);
+		return manager.getSalary() - calculateManagerMaximumSalary(subordinates);
 	}
 
-	private double calculateMinimumSalary(List<Employee> subordinates) {
-		Double averageSubordinatesSalary = getAverageSalary(subordinates);
+	private double calculateManagerMinimumSalary(List<Employee> subordinates) {
+		Double averageSubordinatesSalary = getSubordinatesAverageSalary(subordinates);
 		return averageSubordinatesSalary + ((averageSubordinatesSalary * MINIMUM_MANAGER_SALARY_GAP_IN_PERCENT) / 100);
 	}
 
-	private double calculateMaximumSalary(List<Employee> subordinates) {
-		Double averageSubordinatesSalary = getAverageSalary(subordinates);
+	private double calculateManagerMaximumSalary(List<Employee> subordinates) {
+		Double averageSubordinatesSalary = getSubordinatesAverageSalary(subordinates);
 		return averageSubordinatesSalary + ((averageSubordinatesSalary * MAXIMUM_MANAGER_SALARY_GAP_IN_PERCENT) / 100);
 	}
 
-	private Double getAverageSalary(List<Employee> subordinates) {
+	private Double getSubordinatesAverageSalary(List<Employee> subordinates) {
 		return subordinates.stream().mapToDouble(Employee::getSalary).average().getAsDouble();
 	}
 }

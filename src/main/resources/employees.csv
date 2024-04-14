@@ -9,3 +9,12 @@ Id,firstName,lastName,salary,managerId
 320,Jemu,Ali, 60000,315
 325,Jhon,Mario, 60000,320
 330,Seya,Baba, 60000,325
+
+340,Emp340,Baba, 60000,123
+341,Emp341,Baba, 60000,340
+342,Emp342,Baba, 60000,341
+343,Emp343,Baba, 60000,342
+344,Emp344,Baba, 60000,343
+345,Emp345,Baba, 60000,344
+346,Emp346,Baba, 60000,345
+347,Emp347,Baba, 60000,346

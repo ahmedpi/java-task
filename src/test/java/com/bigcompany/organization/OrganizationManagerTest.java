@@ -96,7 +96,7 @@ public class OrganizationManagerTest {
 	}
 
 	@Test
-	public void GetUnderpaidManagers_ReturnsList_WhenGivenUnderpaidEmployees2()
+	public void InitData_ThrowsException_WhenGivenEmptyRecord()
 			throws URISyntaxException, NoEmployeeRecordFoundException, Exception {
 
 		Exception thrown = assertThrows(NoEmployeeRecordFoundException.class, () -> init("employees_empty.csv"));

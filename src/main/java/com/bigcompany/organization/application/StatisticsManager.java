@@ -7,19 +7,24 @@ import com.bigcompany.organization.service.StatisticsService;
 
 public class StatisticsManager implements StatisticsService {
 
-	private static final String MESSAGE_UNDERPAID_MANAGER = "Name: %s %s, Salary: %s, Underpaid Amount: %s";
-	private static final String MESSAGE_OVERPAID_MANAGER = "Name: %s %s, Salary: %s, Overpaid Amount: %s";
 	private static final String UNDERLINE = "======================================================================";
 	private static final String MESSAGE_TITLE_EMPLOYEES = "EMPLOYEES:";
-	private static final String MESSAGE_TITLE_OVERPAID_MANAGERS = "\nOVERPAID MANAGERS:";
-	private static final String MESSAGE_TITLE_UNDERPAID_MANAGERS = "\nUNDERPAID MANAGERS:";
 	private static final String MESSAGE_TITLE_REPORT_LINE = "\nEMPLOYEES WITH TOO LONG REPORTING LINE: ";
 	private static final String NO_OVERPAID_MANAGER_FOUND = "No Overpaid Manager Found.";
 	private static final String NO_UNDERPAID_MANAGER_FOUND = "No Underpaid Manager Found.";
 	private static final String MESSAGE_ANALYSIS_RESULT = "ANALYSIS RESULT\n";
 	private static final String MESSAGE_NO_EMPLOYEE_FOUND = "No Employee List Found\n";
 
-	private static final String MESSAGE_LONG_REPORTING_LINE = "Name: %s %s, Exceeds reporting limit by: %s level(s)";
+	private static final String MESSAGE_HEADER_REPORT_LINE = "NAME\t\t EXCEEDS REPORTING LIMIT BY";
+	private static final String MESSAGE_LONG_REPORTING_LINE = "%s %s \t %s level(s)";
+
+	private static final String MESSAGE_TITLE_OVERPAID_MANAGERS = "\nOVERPAID MANAGERS:";
+	private static final String MESSAGE_HEADER_OVERPAID_MANAGERS = "NAME\t\t SALARY \t OVERPAID AMOUNT";
+	private static final String MESSAGE_OVERPAID_MANAGER = "%5s %s\t %s\t %s";
+
+	private static final String MESSAGE_TITLE_UNDERPAID_MANAGERS = "\nUNDERPAID MANAGERS:";
+	private static final String MESSAGE_HEADER_UNDERPAID_MANAGERS = "NAME\t\t SALARY \t UNDERPAID AMOUNT";
+	private static final String MESSAGE_UNDERPAID_MANAGER = "%5s %s\t %s\t %s";
 
 	@Override
 	public void printEmployeeStatistics(Organization organization) {
@@ -43,6 +48,7 @@ public class StatisticsManager implements StatisticsService {
 	private void printReportLineInfo(Organization organization) {
 		if (!organization.getEmployeeList().isEmpty() && !organization.getEmployeesWithLongReportLine().isEmpty()) {
 			System.out.println(MESSAGE_TITLE_REPORT_LINE);
+			System.out.println(MESSAGE_HEADER_REPORT_LINE);
 			Map<Employee, Integer> reportingLine = organization.getEmployeesWithLongReportLine();
 			reportingLine.keySet().stream().forEach(emp -> System.out.println(String.format(MESSAGE_LONG_REPORTING_LINE,
 					emp.getFirstName(), emp.getLastName(), reportingLine.get(emp))));
@@ -62,6 +68,7 @@ public class StatisticsManager implements StatisticsService {
 	private void printOverpaidManagersInfo(Map<Employee, Double> overPaidManagers) {
 		if (!overPaidManagers.isEmpty()) {
 			System.out.println(MESSAGE_TITLE_OVERPAID_MANAGERS);
+			System.out.println(MESSAGE_HEADER_OVERPAID_MANAGERS);
 			for (Map.Entry<Employee, Double> entry : overPaidManagers.entrySet()) {
 				Employee employee = entry.getKey();
 				Double amount = entry.getValue();
@@ -76,6 +83,7 @@ public class StatisticsManager implements StatisticsService {
 	private void printUnderpaidManagersInfo(Map<Employee, Double> underPaidManagers) {
 		if (!underPaidManagers.isEmpty()) {
 			System.out.println(MESSAGE_TITLE_UNDERPAID_MANAGERS);
+			System.out.println(MESSAGE_HEADER_UNDERPAID_MANAGERS);
 			for (Map.Entry<Employee, Double> entry : underPaidManagers.entrySet()) {
 				Employee employee = entry.getKey();
 				Double amount = entry.getValue();

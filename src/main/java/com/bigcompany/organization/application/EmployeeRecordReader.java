@@ -25,12 +25,14 @@ public class EmployeeRecordReader implements EmployeeRecordService {
 
 	@Override
 	public List<Employee> getEmployeeData() throws URISyntaxException {
-
 		File file = filResourcesUtils.getFileFromResource(sourceFilePath);
+		return mapCsvToEmployee(file);
+	}
 
+	private List<Employee> mapCsvToEmployee(File file) {
 		try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
-			List<Employee> employees = bufferedReader.lines().skip(1).map(line -> parseEmployee(line))
-					.collect(Collectors.toList());
+			List<Employee> employees = bufferedReader.lines().skip(1).filter(line -> !line.isEmpty())
+					.map(line -> parseEmployee(line)).collect(Collectors.toList());
 			return employees;
 		} catch (IOException e) {
 			throw new UncheckedIOException(e);
@@ -38,7 +40,6 @@ public class EmployeeRecordReader implements EmployeeRecordService {
 	}
 
 	private Employee parseEmployee(String data) {
-
 		String[] empData = data.split(FIELD_SEPARATOR, -1);
 
 		Employee employee = new Employee();
@@ -46,11 +47,15 @@ public class EmployeeRecordReader implements EmployeeRecordService {
 		employee.setFirstName(empData[1].trim());
 		employee.setLastName(empData[2].trim());
 		employee.setSalary(Double.parseDouble(empData[3].trim()));
-		if (empData[4] != null && !empData[4].isEmpty()) {
+		if (hasManager(empData[4])) {
 			employee.setManagerId(Integer.parseInt(empData[4].trim()));
 		}
 
 		return employee;
+	}
+
+	private boolean hasManager(String managerId) {
+		return !managerId.isEmpty();
 	}
 
 }
