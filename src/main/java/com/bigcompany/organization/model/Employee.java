@@ -1,4 +1,4 @@
-package com.bigcompany.organization.application;
+package com.bigcompany.organization.model;
 
 import java.util.List;
 import java.util.Objects;

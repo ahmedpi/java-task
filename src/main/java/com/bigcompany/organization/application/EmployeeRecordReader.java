@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -12,6 +13,7 @@ import java.util.stream.Collectors;
 
 import com.bigcompany.organization.exception.DuplicateEmployeeRecordFoundException;
 import com.bigcompany.organization.exception.NoEmployeeRecordFoundException;
+import com.bigcompany.organization.model.Employee;
 import com.bigcompany.organization.service.EmployeeRecordService;
 import com.bigcompany.organization.utility.FileResourcesUtils;
 
@@ -25,16 +27,22 @@ public class EmployeeRecordReader implements EmployeeRecordService {
 
 	FileResourcesUtils filResourcesUtils = new FileResourcesUtils();
 
-	public EmployeeRecordReader(String sourceFilePath) {
+	public EmployeeRecordReader(String sourceFilePath) throws Exception {
 		this.sourceFilePath = sourceFilePath;
+
 	}
 
 	/**
 	 * Assumptions: An employee can not be a manager to him/herself. An employee can
 	 * not report to it's subordinates (We can not have loop)
+	 * 
+	 * @throws DuplicateEmployeeRecordFoundException
+	 * @throws NoEmployeeRecordFoundException
+	 * @throws URISyntaxException
 	 */
 	@Override
-	public List<Employee> processEmployeeData() throws Exception {
+	public List<Employee> processEmployeeData()
+			throws NoEmployeeRecordFoundException, DuplicateEmployeeRecordFoundException, URISyntaxException {
 		File file = filResourcesUtils.getFileFromResource(sourceFilePath);
 		List<Employee> employeeList = mapCsvToEmployee(file);
 		validateEmployeeData(employeeList);
@@ -71,7 +79,8 @@ public class EmployeeRecordReader implements EmployeeRecordService {
 		return !managerId.isEmpty();
 	}
 
-	private void validateEmployeeData(List<Employee> employeeList) throws Exception {
+	private void validateEmployeeData(List<Employee> employeeList)
+			throws NoEmployeeRecordFoundException, DuplicateEmployeeRecordFoundException {
 		checkEmptyRecord(employeeList);
 		checkDuplicatedEmployees(employeeList);
 	}

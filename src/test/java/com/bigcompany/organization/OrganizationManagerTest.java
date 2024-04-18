@@ -10,16 +10,14 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import com.bigcompany.organization.application.Employee;
 import com.bigcompany.organization.application.EmployeeRecordReader;
-import com.bigcompany.organization.application.OrganizationStructure;
 import com.bigcompany.organization.application.ReportingLineManager;
 import com.bigcompany.organization.application.SalaryManager;
 import com.bigcompany.organization.application.StatisticsManager;
-import com.bigcompany.organization.exception.DuplicateEmployeeRecordFoundException;
+import com.bigcompany.organization.dto.Organization;
 import com.bigcompany.organization.exception.NoEmployeeRecordFoundException;
+import com.bigcompany.organization.model.Employee;
 import com.bigcompany.organization.service.EmployeeRecordService;
-import com.bigcompany.organization.service.Organization;
 import com.bigcompany.organization.service.ReportingLineService;
 import com.bigcompany.organization.service.SalaryService;
 import com.bigcompany.organization.service.StatisticsService;
@@ -88,9 +86,9 @@ public class OrganizationManagerTest {
 	@Test
 	public void InitData_ThrowsException_WhenGivenDuplicateEmployeeRecord()
 			throws URISyntaxException, NoEmployeeRecordFoundException, Exception {
+		OrganizationManager organizationManager = init("employees_duplicated.csv");
 
-		Exception thrown = assertThrows(DuplicateEmployeeRecordFoundException.class,
-				() -> init("employees_duplicated.csv"));
+		Exception thrown = assertThrows(Exception.class, () -> organizationManager.analyzeOrganizationStructure());
 
 		assertEquals("Error: Duplicate Employee Record Found", thrown.getMessage());
 	}
@@ -98,8 +96,9 @@ public class OrganizationManagerTest {
 	@Test
 	public void InitData_ThrowsException_WhenGivenEmptyRecord()
 			throws URISyntaxException, NoEmployeeRecordFoundException, Exception {
+		OrganizationManager organizationManager = init("employees_empty.csv");
 
-		Exception thrown = assertThrows(NoEmployeeRecordFoundException.class, () -> init("employees_empty.csv"));
+		Exception thrown = assertThrows(Exception.class, () -> organizationManager.analyzeOrganizationStructure());
 
 		assertEquals("Error: No Employee Record Found", thrown.getMessage());
 	}
@@ -111,8 +110,7 @@ public class OrganizationManagerTest {
 		SalaryService salaryService = new SalaryManager();
 		ReportingLineService reportingLineService = new ReportingLineManager();
 		StatisticsService statisticsService = new StatisticsManager();
-		Organization organization = new OrganizationStructure(employeeRecordService);
-		OrganizationManager organizationManager = new OrganizationManager(organization, salaryService,
+		OrganizationManager organizationManager = new OrganizationManager(employeeRecordService, salaryService,
 				reportingLineService, statisticsService);
 		return organizationManager;
 	}

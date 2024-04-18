@@ -2,7 +2,8 @@ package com.bigcompany.organization.application;
 
 import java.util.Map;
 
-import com.bigcompany.organization.service.Organization;
+import com.bigcompany.organization.dto.Organization;
+import com.bigcompany.organization.model.Employee;
 import com.bigcompany.organization.service.StatisticsService;
 
 public class StatisticsManager implements StatisticsService {

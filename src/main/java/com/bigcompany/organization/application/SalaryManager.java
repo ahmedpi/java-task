@@ -5,9 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.OptionalDouble;
 import java.util.stream.Collectors;
 
-import com.bigcompany.organization.service.Organization;
+import com.bigcompany.organization.model.Employee;
 import com.bigcompany.organization.service.SalaryService;
 
 public class SalaryManager implements SalaryService {
@@ -19,14 +20,10 @@ public class SalaryManager implements SalaryService {
 	private Map<Employee, Double> overPaidManagers;
 
 	@Override
-	public void checkManagersSalary(Organization organization) {
-		Map<Employee, List<Employee>> employeeManagerMap = populateManagerToEmployeesMap(
-				organization.getEmployeeList());
-		organization.setUnderPaidManagers(getUnderPaidManagers(employeeManagerMap));
-		organization.setOverPaidManagers(getOverPaidManagers(employeeManagerMap));
-	}
+	public Map<Employee, Double> getUnderPaidManagers(List<Employee> employees) {
+		// TODO - remove redundancy
+		Map<Employee, List<Employee>> employeeManagerMap = populateManagerToEmployeesMap(employees);
 
-	private Map<Employee, Double> getUnderPaidManagers(Map<Employee, List<Employee>> employeeManagerMap) {
 		underPaidManagers = employeeManagerMap.keySet().stream()
 				.filter(manager -> manager.getSalary() < calculateManagerMinimumSalary(employeeManagerMap.get(manager)))
 				.collect(Collectors.toMap(e -> e, man -> getUnderPaidAmount(man, employeeManagerMap.get(man))));
@@ -34,7 +31,11 @@ public class SalaryManager implements SalaryService {
 		return underPaidManagers;
 	}
 
-	private Map<Employee, Double> getOverPaidManagers(Map<Employee, List<Employee>> employeeManagerMap) {
+	@Override
+	public Map<Employee, Double> getOverPaidManagers(List<Employee> employees) {
+		// TODO - remove redundancy
+		Map<Employee, List<Employee>> employeeManagerMap = populateManagerToEmployeesMap(employees);
+
 		overPaidManagers = employeeManagerMap.keySet().stream()
 				.filter(manager -> manager.getSalary() > calculateManagerMaximumSalary(employeeManagerMap.get(manager)))
 				.collect(Collectors.toMap(e -> e, emp -> getOverPaidAmount(emp, employeeManagerMap.get(emp))));
@@ -61,7 +62,11 @@ public class SalaryManager implements SalaryService {
 	}
 
 	private Double getSubordinatesAverageSalary(List<Employee> subordinates) {
-		return subordinates.stream().mapToDouble(Employee::getSalary).average().getAsDouble();
+		OptionalDouble optionalDouble = subordinates.stream().mapToDouble(Employee::getSalary).average();
+		if (optionalDouble.isPresent()) {
+			return optionalDouble.getAsDouble();
+		}
+		return 0.0;
 	}
 
 	private Map<Employee, List<Employee>> populateManagerToEmployeesMap(List<Employee> employees) {
