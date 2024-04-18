@@ -106,15 +106,14 @@ public class OrganizationManagerTest {
 
 	private OrganizationManager init(String csvFile)
 			throws NoEmployeeRecordFoundException, URISyntaxException, Exception {
-		EmployeeRecordService employeeRecordService = new EmployeeRecordReader(csvFile);
-		Organization organization = new OrganizationStructure(employeeRecordService);
-		SalaryService salaryService = new SalaryManager();
-		ReportingLineService reportingLineService = new ReportingLineManager(organization);
-		StatisticsService statisticsService = new StatisticsManager();
 
+		EmployeeRecordService employeeRecordService = new EmployeeRecordReader(csvFile);
+		SalaryService salaryService = new SalaryManager();
+		ReportingLineService reportingLineService = new ReportingLineManager();
+		StatisticsService statisticsService = new StatisticsManager();
+		Organization organization = new OrganizationStructure(employeeRecordService);
 		OrganizationManager organizationManager = new OrganizationManager(organization, salaryService,
 				reportingLineService, statisticsService);
-
 		return organizationManager;
 	}
 
