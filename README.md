@@ -9,7 +9,7 @@ than that average.
 This application reads a CSV file which contains information about all the employees, with structure:
 
   |   **Id   | firstName | lastName | salary | managerId**|
-  | -------- |           |          |        |            |
+  --- | --- | --- | --- |--- 
   |  123     | Joe       |  Doe     |  60000 |            |
   | 124      | Martin    | Chekov   |  45000 |  123       |
   | 125      | Bob       | Ronstad  | 47000  |  123       |
