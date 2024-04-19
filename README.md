@@ -22,6 +22,5 @@ After reading the CSV file, the application reports:
 - which employees have a reporting line which is too long, and by how much
 
 
-**References**
-Java Docs: #https://github.com/ahmedpi/java-task/tree/main/doc
+**Java Docs:** https://github.com/ahmedpi/java-task/tree/main/doc
 
