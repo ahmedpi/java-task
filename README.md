@@ -22,11 +22,13 @@ After reading the CSV file, the application reports:
 - which employees have a reporting line which is too long, and by how much
   
 **Build the Java code**
+
 Issue the following at the command line to compile your Java code, run any tests, and package the code up in a JAR file within the target directory
   mvn package
 To execute the JAR file run:
   java -jar target/java-task-0.0.1-SNAPSHOT.jar [FILE PATH]
 
 **Useful Resources**
+
 Java Docs: https://github.com/ahmedpi/java-task/tree/main/doc
 
