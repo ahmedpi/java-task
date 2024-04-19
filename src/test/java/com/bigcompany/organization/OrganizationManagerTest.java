@@ -27,7 +27,7 @@ public class OrganizationManagerTest {
 	@Test
 	public void GetUnderpaidManagers_ReturnsList_WhenGivenUnderpaidEmployees()
 			throws URISyntaxException, NoEmployeeRecordFoundException, Exception {
-		OrganizationManager organizationManager = init("employees.csv");
+		OrganizationManager organizationManager = init("src/test/resources/employees.csv");
 		Organization organization = organizationManager.analyzeOrganizationStructure();
 		Map<Employee, Double> actualResult = organization.getUnderPaidManagers();
 
@@ -38,7 +38,7 @@ public class OrganizationManagerTest {
 	@Test
 	public void GetUnderpaidManagers_ReturnsListWithUnderPaidAmount_WhenGivenUnderpaidEmployees()
 			throws URISyntaxException, NoEmployeeRecordFoundException, Exception {
-		OrganizationManager organizationManager = init("employees.csv");
+		OrganizationManager organizationManager = init("src/test/resources/employees.csv");
 		Organization organization = organizationManager.analyzeOrganizationStructure();
 		Map<Employee, Double> actualResult = organization.getUnderPaidManagers();
 
@@ -48,7 +48,7 @@ public class OrganizationManagerTest {
 	@Test
 	public void CheckManagerSalary_ReturnsList_WhenGivenOverpaidEmployees()
 			throws URISyntaxException, NoEmployeeRecordFoundException, Exception {
-		OrganizationManager organizationManager = init("employees.csv");
+		OrganizationManager organizationManager = init("src/test/resources/employees.csv");
 		Organization organization = organizationManager.analyzeOrganizationStructure();
 		Map<Employee, Double> actualResult = organization.getUnderPaidManagers();
 		assertFalse(actualResult.isEmpty());
@@ -57,7 +57,7 @@ public class OrganizationManagerTest {
 	@Test
 	public void GetOverpaidManagers_ReturnsEmptyList_WhenGivenRegularEmployees()
 			throws URISyntaxException, NoEmployeeRecordFoundException, Exception {
-		OrganizationManager organizationManager = init("employees_normal.csv");
+		OrganizationManager organizationManager = init("src/test/resources/employees_normal.csv");
 		Organization organization = organizationManager.analyzeOrganizationStructure();
 		Map<Employee, Double> actualResult = organization.getUnderPaidManagers();
 		assertTrue(actualResult.isEmpty());
@@ -66,7 +66,7 @@ public class OrganizationManagerTest {
 	@Test
 	public void GetEmployeeWithLongReportingLine_ReturnsEmptyList_WhenNoEmployeeExceedsLimit()
 			throws URISyntaxException, NoEmployeeRecordFoundException, Exception {
-		OrganizationManager organizationManager = init("employees_normal.csv");
+		OrganizationManager organizationManager = init("src/test/resources/employees_normal.csv");
 		Organization organization = organizationManager.analyzeOrganizationStructure();
 		Map<Employee, Double> actualResult = organization.getUnderPaidManagers();
 		assertTrue(actualResult.isEmpty());
@@ -75,7 +75,7 @@ public class OrganizationManagerTest {
 	@Test
 	public void GetEmployeeWithLongReportingLine_ReturnsList_WhenSomeEmployeeExceedsLimit()
 			throws URISyntaxException, NoEmployeeRecordFoundException, Exception {
-		OrganizationManager organizationManager = init("employees.csv");
+		OrganizationManager organizationManager = init("src/test/resources/employees.csv");
 		Organization organization = organizationManager.analyzeOrganizationStructure();
 		Map<Employee, Double> actualResult = organization.getUnderPaidManagers();
 
@@ -86,7 +86,7 @@ public class OrganizationManagerTest {
 	@Test
 	public void InitData_ThrowsException_WhenGivenDuplicateEmployeeRecord()
 			throws URISyntaxException, NoEmployeeRecordFoundException, Exception {
-		OrganizationManager organizationManager = init("employees_duplicated.csv");
+		OrganizationManager organizationManager = init("src/test/resources/employees_duplicated.csv");
 
 		Exception thrown = assertThrows(Exception.class, () -> organizationManager.analyzeOrganizationStructure());
 
@@ -96,7 +96,7 @@ public class OrganizationManagerTest {
 	@Test
 	public void InitData_ThrowsException_WhenGivenEmptyRecord()
 			throws URISyntaxException, NoEmployeeRecordFoundException, Exception {
-		OrganizationManager organizationManager = init("employees_empty.csv");
+		OrganizationManager organizationManager = init("src/test/resources/employees_empty.csv");
 
 		Exception thrown = assertThrows(Exception.class, () -> organizationManager.analyzeOrganizationStructure());
 

@@ -1,0 +1,5 @@
+Id,firstName,lastName,salary,managerId
+123,Sami,Dan,60000,
+124,Teddy,Mak,52000,123
+125,Hasen,Beshir,47000,123
+300,Al,KK,43000,124

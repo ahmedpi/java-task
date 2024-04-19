@@ -43,14 +43,16 @@ public class EmployeeRecordReader implements EmployeeRecordService {
 	@Override
 	public List<Employee> processEmployeeData()
 			throws NoEmployeeRecordFoundException, DuplicateEmployeeRecordFoundException, URISyntaxException {
-		File file = filResourcesUtils.getFileFromResource(sourceFilePath);
-		List<Employee> employeeList = mapCsvToEmployee(file);
+		// File file = filResourcesUtils.getFileFromResource(sourceFilePath);
+
+		List<Employee> employeeList = mapCsvToEmployee(new File(sourceFilePath));
 		validateEmployeeData(employeeList);
 		return employeeList;
 
 	}
 
 	private List<Employee> mapCsvToEmployee(File file) {
+
 		try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
 			List<Employee> employees = bufferedReader.lines().skip(1).filter(line -> !line.isEmpty())
 					.map(line -> parseEmployee(line)).collect(Collectors.toList());

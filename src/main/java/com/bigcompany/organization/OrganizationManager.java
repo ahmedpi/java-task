@@ -48,7 +48,13 @@ public class OrganizationManager {
 	}
 
 	public static void main(String[] args) throws NoEmployeeRecordFoundException, URISyntaxException, Exception {
-		EmployeeRecordService employeeRecordService = new EmployeeRecordReader("employees.csv");
+		// Reading file using scanner
+		if (args.length == 0) {
+			System.out.println("Error: Missing file path");
+			return;
+		}
+
+		EmployeeRecordService employeeRecordService = new EmployeeRecordReader(args[0]);
 		SalaryService salaryService = new SalaryManager();
 		ReportingLineService reportingLineService = new ReportingLineManager();
 		StatisticsService statisticsService = new StatisticsManager();
