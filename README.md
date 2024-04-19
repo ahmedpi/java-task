@@ -8,12 +8,12 @@ than that average.
 
 This application reads a CSV file which contains information about all the employees, with structure:
 
-  **Id,  firstName,  lastName,  salary,  managerId**
-  123,  Joe,        Doe,      60000,
-  124,  Martin,    Chekov,    45000,    123
-  125,  Bob,       Ronstad,   47000,    123
-  300,  Alice,     Hasacat,   50000,    124
-  305,  Brett,     Hardleaf,  34000,    300
+  |**Id,  |firstName,  |lastName,  |salary,  |managerId**
+  |123,  Joe,        Doe,      60000,
+  |124,  Martin,    Chekov,    45000,    123
+  |125,  Bob,       Ronstad,   47000,    123
+  |300,  Alice,     Hasacat,   50000,    124
+  |305,  Brett,     Hardleaf,  34000,    300
   
 After reading the CSV file, the application reports:
 - which managers earn less than they should, and by how much
