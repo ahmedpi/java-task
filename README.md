@@ -1,4 +1,4 @@
-**BIG COMPANY Organizational Structure Analysis**
+**Organizational Structure Analyzer**
 
 This project allows a company to analyze its organizational
 structure and identify potential improvements using the following business rules:
@@ -21,4 +21,7 @@ After reading the CSV file, the application reports:
 - which managers earn more than they should, and by how much
 - which employees have a reporting line which is too long, and by how much
 
+
+**References**
+Java Docs: #https://github.com/ahmedpi/java-task/tree/main/doc
 
