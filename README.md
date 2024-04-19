@@ -1,4 +1,4 @@
-**Organizational Structure Analyzer**
+#**Organizational Structure Analyzer**
 
 This project allows a company to analyze its organizational
 structure and identify potential improvements using the following business rules:
